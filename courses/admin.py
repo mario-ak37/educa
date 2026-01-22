@@ -27,7 +27,7 @@ class GroupAdmin(BaseGroupAdmin, ModelAdmin):
 
 class ModuleInline(StackedInline):
     model = Module
-    extra = 1
+    extra = 0
 
 
 @admin.register(Course)
@@ -43,4 +43,3 @@ class CourseAdmin(ModelAdmin):
 class SubjectAdmin(ModelAdmin):
     list_display = ["title", "slug"]
     prepopulated_fields = {"slug": ["title"]}
-
