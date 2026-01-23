@@ -144,3 +144,38 @@ class ContentOrderFieldTests(TestCase):
             object_id=self.text2.id,
         )
         self.assertEqual(content.order, 1)
+
+
+class CourseModelTests(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.user = User.objects.create_user("mario")
+        cls.subject = Subject.objects.create(title="Programming", slug="programming")
+        cls.course = Course.objects.create(
+            owner=cls.user,
+            subject=cls.subject,
+            title="Python",
+            slug="python",
+            overview="Overview",
+        )
+
+    def test_str_returns_title(self):
+        self.assertEqual(str(self.course), "Python")
+
+
+class ModuleModelTests(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.user = User.objects.create_user("mario")
+        cls.subject = Subject.objects.create(title="Programming", slug="programming")
+        cls.course = Course.objects.create(
+            owner=cls.user,
+            subject=cls.subject,
+            title="Python",
+            slug="python",
+            overview="Overview",
+        )
+        cls.module = Module.objects.create(course=cls.course, title="Intro", order=0)
+
+    def test_str_returns_order_and_title(self):
+        self.assertEqual(str(self.module), "0. Intro")
