@@ -76,29 +76,29 @@ class CourseModuleUpdateView(TemplateResponseMixin, View):
             return redirect("manage_course_list")
         return self.render_to_response({"course": self.course, "formset": formset})
 
+
 class ContentCreateUpdateView(TemplateResponseMixin, View):
     module = None
     model = None
     obj = None
-    template_name = 'courses/manage/content/form.html'
+    template_name = "courses/manage/content/form.html"
+
     def get_model(self, model_name):
-            if model_name in ['text', 'video', 'image', 'file']:
-                return apps.get_model(
-                    app_label='courses', model_name=model_name
-                )
-            return None
+        if model_name in ["text", "video", "image", "file"]:
+            return apps.get_model(app_label="courses", model_name=model_name)
+        return None
+
     def get_form(self, model, *args, **kwargs):
-            Form = modelform_factory(
-                model, exclude=['owner', 'order', 'created', 'updated']
-            )
-            return Form(*args, **kwargs)
+        Form = modelform_factory(
+            model, exclude=["owner", "order", "created", "updated"]
+        )
+        return Form(*args, **kwargs)
+
     def dispatch(self, request, module_id, model_name, id=None):
-         self.module = get_object_or_404(
+        self.module = get_object_or_404(
             Module, id=module_id, course__owner=request.user
         )
-         self.model = self.get_model(model_name)
+        self.model = self.get_model(model_name)
         if id:
-         self.obj = get_object_or_404(
-                self.model, id=id, owner=request.user
-            )
-         return super().dispatch(request, module_id, model_name, id)
+            self.obj = get_object_or_404(self.model, id=id, owner=request.user)
+        return super().dispatch(request, module_id, model_name, id)
