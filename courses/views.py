@@ -81,7 +81,7 @@ class ContentCreateUpdateView(TemplateResponseMixin, View):
     module = None
     model = None
     obj = None
-    template_name = "courses/manage/content/form.html"
+    template_name = "form.html"
 
     def get_model(self, model_name):
         if model_name in ["text", "video", "image", "file"]:
@@ -102,3 +102,7 @@ class ContentCreateUpdateView(TemplateResponseMixin, View):
         if id:
             self.obj = get_object_or_404(self.model, id=id, owner=request.user)
         return super().dispatch(request, module_id, model_name, id)
+
+    def get(self, request, module_id, model_name, id=None):
+        form = self.get_form(self.model, instance=self.obj)
+        return self.render_to_response({"form": form, "object": self.obj})
